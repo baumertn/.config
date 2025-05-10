@@ -8,9 +8,20 @@ return { -- Highlight, edit, and navigate code
 	opts = {
     --stylua: ignore
 		ensure_installed = {
-      'bash', 'fish', 'c', 'lua', 'vim', 'vimdoc', 'go',
+      -- Vim
+      'lua', 'vim', 'vimdoc',
+      -- Shell
+      'bash', 'fish',
+      -- Web
       'css', 'html', 'htmldjango', 'javascript', 'json', 'tsx',
-      'python', 'regex', 'markdown',
+      -- Python
+      'python',
+      -- Git
+      'git_config', 'gitcommit', 'git_rebase', 'gitignore', 'gitattributes',
+      -- Ohter
+      'c', 'go', 'c_sharp',
+      'regex', 'markdown',
+
     },
 		--stylua: ignore end
 		-- Autoinstall languages that are not installed
