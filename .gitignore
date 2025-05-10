@@ -1,0 +1,11 @@
+# Ignore everything
+/*
+
+# Except:
+!.gitignore
+!/fish/
+!/nvim/
+!/sway/
+!/tofi/
+!/waybar/
+!/wezterm/
