@@ -40,6 +40,7 @@ local tools = {
 	-- .net
 	"netcoredbg", -- Debugger
 	-- C#
+	"csharpier", -- Formatter
 	-- F#
 	-- "fantomas",
 }
