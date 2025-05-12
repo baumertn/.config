@@ -1,5 +1,6 @@
 # Ignore everything
 /*
+/sway/config.d/50-device.conf
 
 # Except:
 !.gitignore
