@@ -5,7 +5,9 @@ local servers = {
 	gopls = {},
 	ts_ls = {},
 	eslint = {},
-	omnisharp_mono = {},
+	-- omnisharp_mono = {},
+	roslyn = {},
+	rzls = {},
 	lua_ls = {
 		settings = {
 			Lua = {
@@ -205,7 +207,12 @@ return { -- LSP Configuration & Plugins
 		--    :Mason
 		--
 		--  You can press `g?` for help in this menu.
-		require("mason").setup()
+		require("mason").setup({
+			registries = {
+				"github:mason-org/mason-registry",
+				"github:Crashdummyy/mason-registry",
+			},
+		})
 
 		-- You can add other tools here that you want Mason to install
 		-- for you, so that they are available from within Neovim.
