@@ -38,8 +38,13 @@ window#waybar {
     color: @crust;
 }
 
-#workspaces button.visible {
-    color: @crust;
+#workspaces button:hover {
+    background-color: @mauve;
+    color: @text;
+}
+#workspaces button.focused:hover {
+    background-color: @crust;
+    color: @mauve;
 }
 
 #workspaces button.urgent {
