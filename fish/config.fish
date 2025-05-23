@@ -10,5 +10,9 @@ end
 #   # start_tmux
 # end
 
-uv generate-shell-completion fish | source
-uvx --generate-shell-completion fish | source
+if type -q uv
+  uv generate-shell-completion fish | source
+end
+if type -q uvx
+  uvx --generate-shell-completion fish | source
+end
