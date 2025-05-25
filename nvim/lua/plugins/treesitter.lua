@@ -21,7 +21,7 @@ return { -- Highlight, edit, and navigate code
       -- Ohter
       'c', 'go', 'c_sharp',
       'regex', 'markdown',
-
+      'sql',
     },
 		--stylua: ignore end
 		-- Autoinstall languages that are not installed
