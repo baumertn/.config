@@ -113,4 +113,29 @@ vim.api.nvim_create_autocmd('FileType', {
   desc = [[Ensure proper 'formatoptions']],
 })
 
+vim.diagnostic.config({
+  underline = true,
+  virtual_lines = false,
+  virtual_text = {
+    spacing = 4,
+    prefix = "■",
+  },
+  signs = true,
+  update_in_insert = false,
+  severity_sort = false,
+
+  -- float = {
+  --   border = "rounded",
+  --   focusable = true,
+  --   header = "",
+  --   prefix = "",
+  --   source = "if_many",
+  --   style = "minimal",
+  -- },
+  float = true,
+  jump = {
+    float = false,
+    wrap = true
+  },
+})
 --stylua: ignore end
