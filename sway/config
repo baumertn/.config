@@ -20,7 +20,7 @@ set $term wezterm
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu tofi-run | xargs swaymsg exec --
+set $menu tofi-drun | xargs swaymsg exec --
 
 include catppuccin-macchiato
 
@@ -47,7 +47,7 @@ set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disabled
 bindswitch --reload --locked lid:off output $laptop enabled
 exec_always ~/.config/sway/clamshell.sh
-bindsym $mod+Shift+F12 exec ~/.config/scripts/clamshell.sh
+bindsym $mod+Shift+F10 exec ~/.config/scripts/clamshell.sh
 
 ### Idle configuration
 #
