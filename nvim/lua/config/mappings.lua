@@ -69,6 +69,7 @@ local xmap_leader = function(suffix, rhs, desc, opts)
 	keymap("x", "<leader>" .. suffix, rhs, opts)
 end
 
+nmap_leader("u", "<Cmd>UndotreeToggle<CR>", "[U]ndo Tree")
 -- e is for 'explore', using Oil
 nmap_leader("ef", "<CMD>Oil<CR>", "[E]xplore [F]iles")
 
@@ -87,6 +88,12 @@ xmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at selection")
 
 -- l is for 'LSP'
 local formatting_cmd = '<CMD>lua require("conform").format({ lsp_fallback = true })<CR>'
+nmap_leader('la', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'Function [a]rguments popup')
+keymap("i", "<C-k>", function()
+    vim.lsp.buf.signature_help()
+  end,
+{ desc = "LSP: Show function signature" })
+
 nmap_leader('la', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'Function [a]rguments popup')
 nmap_leader('le', '<CMD>lua vim.diagnostic.open_float()<CR>', '[E]rror diagnostic popup')
 nmap_leader('lf', formatting_cmd, '[F]ormat')
