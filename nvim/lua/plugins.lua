@@ -118,31 +118,40 @@ return {
 	},
 	{ "echasnovski/mini.cursorword", version = false, opts = {} },
 	{ "echasnovski/mini.surround", version = false, opts = {} },
-	{
-		"echasnovski/mini.hipatterns",
-		version = false,
-		config = function()
-			local hipatterns = require("mini.hipatterns")
-			hipatterns.setup({
-
-				highlighters = {
-					-- Highlight hex color strings (`#rrggbb`) using that color
-					hex_color = hipatterns.gen_highlighter.hex_color(),
-					-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-					fixme = { pattern = "() FIXME():", group = "MiniHipatternsFixme" },
-					hack = { pattern = "() HACK():", group = "MiniHipatternsHack" },
-					todo = { pattern = "() TODO():", group = "MiniHipatternsTodo" },
-					note = { pattern = "() NOTE():", group = "MiniHipatternsNote" },
-					fixme_colon = { pattern = " FIXME():()", group = "MiniHipatternsFixmeColon" },
-					hack_colon = { pattern = " HACK():()", group = "MiniHipatternsHackColon" },
-					todo_colon = { pattern = " TODO():()", group = "MiniHipatternsTodoColon" },
-					note_colon = { pattern = " NOTE():()", group = "MiniHipatternsNoteColon" },
-					fixme_body = { pattern = " FIXME:().*()", group = "MiniHipatternsFixmeBody" },
-					hack_body = { pattern = " HACK:().*()", group = "MiniHipatternsHackBody" },
-					todo_body = { pattern = " TODO:().*()", group = "MiniHipatternsTodoBody" },
-					note_body = { pattern = " NOTE:().*()", group = "MiniHipatternsNoteBody" },
-				},
-			})
-		end,
-	},
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+  },
+  -- Currently, I don't use it anymore. Maybe useful for other highlights but now I only need what todo-comments does
+	-- {
+	-- 	"echasnovski/mini.hipatterns",
+	-- 	version = false,
+	-- 	config = function()
+	-- 		local hipatterns = require("mini.hipatterns")
+	-- 		hipatterns.setup({
+	--
+	-- 			highlighters = {
+	-- 				-- Highlight hex color strings (`#rrggbb`) using that color
+	-- 				hex_color = hipatterns.gen_highlighter.hex_color(),
+	-- 				-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+	-- 				fixme = { pattern = "() FIXME():", group = "MiniHipatternsFixme" },
+	-- 				hack = { pattern = "() HACK():", group = "MiniHipatternsHack" },
+	-- 				todo = { pattern = "() TODO():", group = "MiniHipatternsTodo" },
+	-- 				note = { pattern = "() NOTE():", group = "MiniHipatternsNote" },
+	-- 				fixme_colon = { pattern = " FIXME():()", group = "MiniHipatternsFixmeColon" },
+	-- 				hack_colon = { pattern = " HACK():()", group = "MiniHipatternsHackColon" },
+	-- 				todo_colon = { pattern = " TODO():()", group = "MiniHipatternsTodoColon" },
+	-- 				note_colon = { pattern = " NOTE():()", group = "MiniHipatternsNoteColon" },
+	-- 				fixme_body = { pattern = " FIXME:().*()", group = "MiniHipatternsFixmeBody" },
+	-- 				hack_body = { pattern = " HACK:().*()", group = "MiniHipatternsHackBody" },
+	-- 				todo_body = { pattern = " TODO:().*()", group = "MiniHipatternsTodoBody" },
+	-- 				note_body = { pattern = " NOTE:().*()", group = "MiniHipatternsNoteBody" },
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 }
