@@ -118,15 +118,16 @@ return {
 	},
 	{ "echasnovski/mini.cursorword", version = false, opts = {} },
 	{ "echasnovski/mini.surround", version = false, opts = {} },
-  {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-  },
-  -- Currently, I don't use it anymore. Maybe useful for other highlights but now I only need what todo-comments does
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+	},
+	-- Currently, I don't use it anymore. Maybe useful for other highlights but now I only need what todo-comments does
 	-- {
 	-- 	"echasnovski/mini.hipatterns",
 	-- 	version = false,
