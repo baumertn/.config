@@ -7,7 +7,7 @@ set current_scheme (gsettings get org.gnome.desktop.interface color-scheme)
 set current_scheme (string trim -c \' $current_scheme)
 
 if test $current_scheme = "prefer-dark"
-    echo "D"
+    echo ""
 else
-    echo "L"
+    echo ""
 end

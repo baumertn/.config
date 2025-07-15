@@ -181,7 +181,7 @@
       "escape": true
    },
    "custom/theme": {
-        "format": "CLR: {}",
+        "format": " {} ",
         "exec": "~/.config/hypr/get_current_theme.fish",
         "exec-if": "exit 0",
         "on-click": "~/.config/hypr/toggle_theme.fish",
