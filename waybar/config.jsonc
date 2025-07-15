@@ -5,26 +5,35 @@
     // "width": 1280, // Waybar width
     // "gtk-layer-shell": "false",
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "custom/scratchpad", "sway/mode"],
-    // "modules-center": ["sway/window"],
-    "modules-center": [],
+    // "modules-left": ["sway/workspaces", "custom/scratchpad", "sway/mode"],
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["hyprland/window"],
     "modules-right": [
-//      "custom/zypper",
-      "idle_inhibitor",
       "network",
       "bluetooth",
       "cpu",
       "memory",
       "temperature",
-      //"backlight",
       "battery",
-      "battery#bat2",
       "pulseaudio",
-      "custom/layout",
       "custom/theme",
       "clock",
-      "tray",
-      "custom/notification"],
+      "custom/notification",
+      "tray"
+    ],
+    "hyprland/workspaces": {
+        "format": "{name} {icon}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "format-icons": {
+            "urgent": "!",
+            "focused": "",
+            "default": ""
+        }
+    },
+    "hyprland/window": {
+      "separate-outputs": true
+    },
     "sway/mode": {
         "format": "{}"
     },
@@ -42,49 +51,21 @@
         "max-length": 80,
         "tooltip": false
     },
-    "custom/layout": {
-        "tooltip": false,
-        "exec": "swaymsg -mrt subscribe '[\"input\"]' | jq -r --unbuffered \"select(.change == \\\"xkb_layout\\\") | .input | select(.type == \\\"keyboard\\\") | .xkb_active_layout_name | .[0:2]\""
-    },
-    "custom/zypper": {
-        "format": "PKG: {}",
-        "interval": 3600,
-        "exec": "zypper lu | grep 'v \\+|' | wc -l; echo 'packages to update'",
-        "exec-if": "exit 0",
-        "on-click": "exec wezterm -e sudo sh -c 'zypper ref; zypper dup; pkill -SIGRTMIN+8 waybar'",
-        "signal": 8
-    },
-    // Modules configuration
-    //  "sway/workspaces": {
-    //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
-    "idle_inhibitor": {
-        "format": "IDLE: {icon}",
-        "format-icons": {
-            "activated": "OFF",
-            "deactivated": "ON"
-        }
-    },
+    //"idle_inhibitor": {
+    //    "format": "IDLE: {icon}",
+    //    "format-icons": {
+    //        "activated": "OFF",
+    //        "deactivated": "ON"
+    //    }
+    //},
     "tray": {
         // "icon-size": 21,
         "spacing": 10
     },
     "clock": {
-        // "timezone": "America/New_York",
+        "timezone": "Europe/Berlin",
         "format": "{:%F %R}",
-        "tooltip-format": "<span color='#35b9ab'><tt><small>{calendar}</small></tt></span>",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode-mon-col"      : 4,
             "weeks-pos"         : "left",
@@ -105,11 +86,14 @@
         "interval": 10
     },
     "cpu": {
-        "format": "CPU: {usage}%",
+        "interval": 1,
+        "format": " {usage:}%",
         "tooltip": false
     },
     "memory": {
-        "format": "MEM: {}%"
+        "interval": 30,
+        "format": " {}%",
+        "tooltip": false
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -117,7 +101,7 @@
         "critical-threshold": 80,
         // "format-critical": "{temperatureC}°C {icon}",
         //"format": "{temperatureC}°C {icon}",
-        "format": "TEMP: {temperatureC}°C",
+        "format": " {temperatureC}°C",
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -125,15 +109,18 @@
     },
     "battery": {
         "states": {
-            // "good": 95,
+            "good": 80,
             "warning": 30,
             "critical": 15
         },
-        "format": "BAT: {capacity}% {time}",
-        "format-charging": "BAT: Charging {capacity}% {time}",
+        "format": "{icon}",
+        "format-charging": "{icon}",
         "format-plugged": "",
-        "format-alt": "{capacity}% {time}",
-        "format-icons": ["", "", "", "", ""]
+        "format-alt": "{icon} {capacity}% {time}",
+        "format-icons": {
+            "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+            "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+        }
     },
     "battery#bat2": {
         "bat": "BAT2"
@@ -165,32 +152,26 @@
       "on-click-right": "exec wezterm -e sh -c 'bluetoothctl'"
     },
     "pulseaudio": {
-        "format": "VOL: {volume}%",
-        //"format-alt": "{volume} {icon}",
-        //"format-alt-click": "click-right",
-        "format-muted": "/",
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+          "headphones": "",
+          "default": ["", ""]
+        },
         "scroll-step": 10,
-        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-        "on-click-right": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click": "pavucontrol",
         "tooltip": false
-    },
-    "custom/scratchpad": {
-        "format-text": "{}",
-        "return-type": "json",
-        "interval": 3,
-        "exec": "/usr/share/openSUSEway/helpers/scratchpad-indicator.sh 2> /dev/null",
-        "exec-if": "exit 0",
-        "on-click": "swaymsg 'scratchpad show'",
-        "on-click-right": "swaymsg 'move scratchpad'"
     },
     "custom/notification": {
       "tooltip": true,
       "format": "{icon}",
       "format-icons": {
-           "notification": " <span foreground='red'><small>⬤</small></span> ",
-           "none": "",
-           "dnd-notification": " <span><small>⬤</small></span> ",
-           "dnd-none": ""
+           "notification": " <span foreground='red'><small>󱅫</small></span> ",
+           "none": " <span><small></small></span> ",
+           "dnd-notification": " <span><small></small></span> ",
+           "dnd-none": " <span><small></small></span> ",
       },
       "return-type": "json",
       "exec-if": "which swaync-client",
@@ -201,10 +182,20 @@
    },
    "custom/theme": {
         "format": "CLR: {}",
-        "exec": "~/.config/sway/get_current_theme.fish",
+        "exec": "~/.config/hypr/get_current_theme.fish",
         "exec-if": "exit 0",
-        "on-click": "~/.config/sway/toggle_theme.fish",
+        "on-click": "~/.config/hypr/toggle_theme.fish",
         "interval": 3600,
         "tooltip": false,
-    },
+   },
+   "custom/lock": {
+      "tooltip": false,
+      "format": "󰌾",
+      "on-click": "sh -c '(sleep 0.5s; hyprlock)' & disown"
+   },
+   "custom/suspend": {
+      "tooltip": false,
+      "format": " 󰒲",
+      "on-click": "sh -c '(sleep 0.5s; hyprlock; sleep 0.5s)' & systemctl suspend"
+   }
 }
