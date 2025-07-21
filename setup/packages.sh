@@ -1,4 +1,4 @@
-sudo zypper in
+sudo zypper in \
 7zip \
 adobe-sourcecodepro-fonts \
 adobe-sourcesans4-fonts \
