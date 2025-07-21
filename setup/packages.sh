@@ -26,6 +26,7 @@ hyprlock \
 hyprpolkitagent \
 kdeconnect-kde \
 krita \
+mako \
 Mesa \
 MozillaFirefox \
 neovim \
