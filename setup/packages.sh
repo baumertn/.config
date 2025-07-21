@@ -1,9 +1,5 @@
 sudo zypper in \
 7zip \
-adobe-sourcecodepro-fonts \
-adobe-sourcesans4-fonts \
-adobe-sourcesanspro-fonts \
-adobe-sourceserifpro-fonts \
 alsa \
 AusweisApp \
 bash \
@@ -34,8 +30,6 @@ Mesa \
 MozillaFirefox \
 neovim \
 NetworkManager \
-nextcloud-desktop \
-nextcloud-desktop-dolphin \
 opi \
 pipewire \
 polkit \
