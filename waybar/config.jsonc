@@ -18,8 +18,8 @@
       "pulseaudio",
       "custom/theme",
       "clock",
-      "custom/notification"
-      // "tray"
+      // "custom/notification",
+      "tray"
     ],
     "hyprland/workspaces": {
         "format": "{name}{icon}",
