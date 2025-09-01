@@ -1,6 +1,6 @@
 return {
 	{
-		"echasnovski/mini.diff",
+		"nvim-mini/mini.diff",
 		version = false,
 		opts = {
 			view = {
@@ -16,5 +16,5 @@ return {
 			},
 		},
 	},
-	{ "echasnovski/mini-git", version = false, main = "mini.git", opts = {} },
+	{ "nvim-mini/mini-git", version = false, main = "mini.git", opts = {} },
 }

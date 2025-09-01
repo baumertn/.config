@@ -28,9 +28,9 @@ return {
 		"f-person/auto-dark-mode.nvim",
 		opts = {}, -- It uses vims background by default, which catppuccin seems to support
 	},
-	{ "echasnovski/mini.extra", version = false, opts = {} },
+	{ "nvim-mini/mini.extra", version = false, opts = {} },
 	{
-		"echasnovski/mini.notify",
+		"nvim-mini/mini.notify",
 		version = false,
 		config = function()
 			require("mini.notify").setup({
@@ -40,7 +40,7 @@ return {
 		end,
 	},
 	{
-		"echasnovski/mini.clue",
+		"nvim-mini/mini.clue",
 		version = false,
 		config = function()
 			local miniclue = require("mini.clue")
@@ -84,10 +84,10 @@ return {
 			})
 		end,
 	},
-	{ "echasnovski/mini.statusline", version = false, opts = {} },
+	{ "nvim-mini/mini.statusline", version = false, opts = {} },
 	-- { "nvim-tree/nvim-web-devicons" },
 	{
-		"echasnovski/mini.icons",
+		"nvim-mini/mini.icons",
 		opts = {},
 		lazy = true,
 		specs = {
@@ -102,7 +102,7 @@ return {
 	},
 	-- Those might be part of different files and called on later events?
 	{
-		"echasnovski/mini.ai",
+		"nvim-mini/mini.ai",
 		version = false,
 		confg = function()
 			local ai = require("mini.ai")
@@ -116,8 +116,8 @@ return {
 			})
 		end,
 	},
-	{ "echasnovski/mini.cursorword", version = false, opts = {} },
-	{ "echasnovski/mini.surround", version = false, opts = {} },
+	{ "nvim-mini/mini.cursorword", version = false, opts = {} },
+	{ "nvim-mini/mini.surround", version = false, opts = {} },
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -129,7 +129,7 @@ return {
 	},
 	-- Currently, I don't use it anymore. Maybe useful for other highlights but now I only need what todo-comments does
 	-- {
-	-- 	"echasnovski/mini.hipatterns",
+	-- 	"nvim-mini/mini.hipatterns",
 	-- 	version = false,
 	-- 	config = function()
 	-- 		local hipatterns = require("mini.hipatterns")
