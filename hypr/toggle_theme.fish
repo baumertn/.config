@@ -38,6 +38,9 @@ if test "$current_scheme" = "prefer-dark"
         sed -i 's/style=.*/style=Breeze/' $QT6CT_FILE
     end
 
+    # Waybar
+    cp ~/.config/waybar/style-light.css ~/.config/waybar/style.css
+
     echo "Switched to Light"
 else
     # Dark Mode
@@ -66,6 +69,9 @@ else
     if test -f $QT6CT_FILE
         sed -i 's/style=.*/style=Breeze/' $QT6CT_FILE
     end
+
+    # Waybar
+    cp ~/.config/waybar/style-dark.css ~/.config/waybar/style.css
 
     echo "Switched to Dark"
 end

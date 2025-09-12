@@ -1,0 +1,94 @@
+* {
+    border:        none;
+    border-radius: 0;
+    font-family:   JetbrainsMono Nerd Font, "Source Sans Pro", "FontAwesome 6 Free";
+    font-size:     15px;
+    box-shadow:    none;
+    text-shadow:   none;
+    transition-duration: 0s;
+}
+
+window#waybar {
+    color: @text;
+    background-color: @base;
+}
+
+/*window#waybar.solo {*/
+/*    color: rgba(53, 185, 171, 1);*/
+/*}*/
+
+#workspaces {
+    /*margin: 0 5px;*/
+}
+
+#custom-scratchpad {
+    margin: 0px	5px;
+    padding: 0px 5px;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    color: @text;
+}
+
+#workspaces button.focused,
+#workspaces button.active {
+    background-color: @mauve;
+    color: @crust;
+}
+
+#workspaces button:hover {
+    background-color: @mauve;
+    color: @text;
+}
+#workspaces button.focused:hover {
+    background-color: @crust;
+    color: @mauve;
+}
+
+#workspaces button.urgent {
+    color: @red;
+}
+
+#mode,
+#battery,
+#cpu,
+#memory,
+#network,
+#bluetooth,
+#pulseaudio,
+#idle_inhibitor,
+#temperature,
+#custom-layout,
+#backlight {
+    margin: 0px 6px 0px 10px;
+/*    min-width: 30px;*/
+}
+
+#clock {
+    margin: 0px 6px 0px 10px;
+}
+
+#battery.warning {
+   color: @yellow;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#bluetooth.disabled {
+    color: @overlay1;
+}
+
+#bluetooth.off {
+    color: @overlay1;
+}
+
+#bluetooth.connected {
+    color: @green;
+}
