@@ -1,8 +1,6 @@
 return {
 	"folke/trouble.nvim",
-	opts = {}, -- for default options, refer to the configuration section for custom setup.
-	cmd = "Trouble",
-	config = {
+	opts = {
 		modes = {
 			diagnostics = {
 				filter = function(items)
@@ -12,7 +10,8 @@ return {
 				end,
 			},
 		},
-	},
+	}, -- for default options, refer to the configuration section for custom setup.
+	cmd = "Trouble",
 	keys = {
 		{
 			"<leader>xx",
