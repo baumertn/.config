@@ -1,13 +1,18 @@
 -- stylelua: ignore
 local servers = {
+	-- Python
 	basedpyright = {},
 	-- ruff_lsp = {},
+	-- Go
 	gopls = {},
+	-- Javascript & Typescript
 	ts_ls = {},
 	eslint = {},
+	-- C#
 	-- omnisharp_mono = {},
-	roslyn = {},
-	rzls = {},
+	-- roslyn = {},
+	-- rzls = {},
+	-- Lua
 	lua_ls = {
 		settings = {
 			Lua = {
@@ -40,9 +45,9 @@ local tools = {
 	"prettierd",
 	"delve",
 	-- .net
-	"netcoredbg", -- Debugger
+	-- "netcoredbg", -- Debugger
 	-- C#
-	"csharpier", -- Formatter
+	-- "csharpier", -- Formatter
 	-- F#
 	-- "fantomas",
 }
