@@ -152,13 +152,13 @@
       "on-click-right": "exec wezterm -e sh -c 'bluetoothctl'"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
-        "format-icons": {
-          "headphones": "",
-          "default": ["", ""]
-        },
+        "format": "{volume}%",
+        "format-bluetooth": "{volume}%",
+        "format-muted": "MUTE",
+        // "format-icons": {
+        //   "headphones": "",
+        //   "default": ["", ""]
+        // },
         "scroll-step": 10,
         "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
         "on-click": "pavucontrol",
