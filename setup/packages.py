@@ -2,6 +2,7 @@
 
 
 import argparse
+import subprocess
 from typing import Final
 
 
@@ -35,6 +36,8 @@ STANDARD_PACKAGES: Final = [
     "MozillaFirefox",
     "neovim",
     "NetworkManager",
+    "nextcloud-desktop",
+    "nextcloud-desktop-dolphin",
     "opi",
     "pipewire",
     "polkit",
@@ -89,11 +92,9 @@ def run() -> None:
     parser = get_parser()
     args = parser.parse_args()
 
-    print(args)
-    print(args.module)
     if args.type == "personal":
-        packages = STANDARD_PACKAGES.extend(PERSONAL_PACKAGES)
-        flatpak_packages = FLATPAK_STANDARD_PACKAGES.extend(FLATPAK_PERSONAL_PACKAGES)
+        packages = STANDARD_PACKAGES + PERSONAL_PACKAGES
+        flatpak_packages = FLATPAK_STANDARD_PACKAGES + FLATPAK_PERSONAL_PACKAGES
     else:
         packages = STANDARD_PACKAGES
         flatpak_packages = FLATPAK_STANDARD_PACKAGES
@@ -101,12 +102,17 @@ def run() -> None:
     match args.module:
         case "install":
             print("installing packages")
-            print(packages)
-            print(flatpak_packages)
+            print("="*20)
+            install(packages, flatpak_packages)
         case "check":
-            print("checking for packages not in the list or missing packages")
+            print("Checking the diff between listed and actually installed packages is not implemented yet")
         case "clean":
-            print("Removing packages not in the list")
+            print("Removing packages not listed is not implemented yet")
+
+def install(packages: list[str], flatpack_packages: list[str]):
+    _ = subprocess.run(["sudo", "zypper", "install", "--no-recommends"] + packages, check=True)
+    _ = subprocess.run(["opi", "codecs"], check=True)
+    _ = subprocess.run(["flatpak", "install", "--user"] + flatpack_packages, check=True)
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -118,22 +124,9 @@ def get_parser() -> argparse.ArgumentParser:
     )
 
     modules = parser.add_subparsers(dest="module", required=True)
-    install_parser = modules.add_parser("install", help="Install packages")
-
-    check_parser = modules.add_parser("check")
-
-    clean_parser = modules.add_parser("clean")
-
-    # # MODULE: user
-    # user = modules.add_parser("user")
-    #
-    # user_actions = user.add_subparsers(dest="action", required=True)
-    #
-    # user_add = user_actions.add_parser("add")
-    # user_add.add_argument("--name", required=True)
-    #
-    # user_delete = user_actions.add_parser("delete")
-    # user_delete.add_argument("--id", required=True)
+    _ = modules.add_parser("install", help="Install packages")
+    _ = modules.add_parser("check")
+    _ = modules.add_parser("clean")
 
     return parser
 
