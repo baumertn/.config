@@ -11,7 +11,9 @@ case "$choice" in
         hyprctl dispatch exit
         ;;
     Suspend)
-        systemctl suspend
+        hyprlock & sleep 0.5; systemctl suspend
+        # systemctl suspend-then-hibernate
+        # systemctl suspend
         ;;
     Reboot)
         systemctl reboot
