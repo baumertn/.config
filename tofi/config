@@ -13,7 +13,7 @@
 	# characters not in the chosen font will fail to render.
 	#
 	# Otherwise, fonts are interpreted in Pango format.
-	font = "Sans"
+	font = "/usr/share/fonts/noto/NotoSansMono-Regular.ttf"
 
 	# Point size of text.
 	font-size = 24
@@ -171,7 +171,7 @@
 	height = 720
 
 	# Window background color
-	background-color = #1B1D1E
+	background-color = #000000
 
 	# Width of the border outlines in pixels.
 	outline-width = 4
@@ -322,9 +322,16 @@
   font = monospace
   outline-width = 0
   border-width = 0
-  text-color = #cad3f5
-  background-color = #24273a
-  selection-color = #c6a0f6
+  text-color = #FFFFFF
+  background-color = #000000
+	selection-color = #000000
+	selection-background = #ffffff
+	selection-background-padding = 2
+	selection-background-corner-radius = 0
+
+	# Matching portion of selection text
+	selection-match-color = #00000000
+
   min-input-width = 120
   result-spacing = 15
   padding-top = 0
