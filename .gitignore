@@ -1,6 +1,7 @@
 # Ignore everything
 /*
 /sway/config.d/50-device.conf
+/hypr/devices/current.conf
 
 # Except:
 !.gitignore
