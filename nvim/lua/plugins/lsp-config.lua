@@ -12,6 +12,8 @@ local servers = {
 	-- omnisharp_mono = {},
 	-- roslyn = {},
 	-- rzls = {},
+	-- Elixir
+	expert = {},
 	-- Lua
 	lua_ls = {
 		settings = {

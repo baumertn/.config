@@ -1,6 +1,45 @@
 -- Global Config
 _G.Config = {
 	inlay_hints_visible = true,
+	treesitter_parsers = {
+		-- Vim
+		"lua",
+		"vim",
+		"vimdoc",
+		"luadoc",
+		-- Shell
+		"bash",
+		"fish",
+		-- Web
+		"css",
+		"html",
+		"javascript",
+		"tsx",
+		-- Python
+		"python",
+		"htmldjango",
+		-- Git
+		"git_config",
+		"gitcommit",
+		"git_rebase",
+		"gitignore",
+		"gitattributes",
+		-- Elixir
+		"elixir",
+		"eex",
+		"heex",
+		-- Ohter
+		"c",
+		"go",
+		-- "c_sharp",
+		"regex",
+		"markdown",
+		"markdown_inline",
+		"query",
+		"json",
+		"toml",
+		"sql",
+	},
 }
 _G.Util = {}
 _G.Util.keymap = function(mode, keys, cmd, opts)
