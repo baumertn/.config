@@ -25,6 +25,8 @@
       "group/tray",
     ],
     "hyprland/workspaces": {
+        "show-special": true,
+        "special-visible-only": true,
         "format": "{name}{icon}",
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
@@ -176,8 +178,8 @@
       ]
     },
     "pulseaudio": {
-        "format": "{volume}%",
-        "format-bluetooth": "{volume}%",
+        "format": " {volume}%",
+        "format-bluetooth": "{volume}%",
         "format-muted": "MUTE",
         // "format-icons": {
         //   "headphones": "",
