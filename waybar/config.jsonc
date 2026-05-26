@@ -28,8 +28,8 @@
         "show-special": true,
         "special-visible-only": true,
         "format": "{name}{icon}",
-        "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" }))'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" }))'",
         "format-icons": {
             "urgent": "!",
             "focused": "",
@@ -68,10 +68,10 @@
     },
     "group/performance": {
       "orientation": "inherit",
-      "drawer": {
-          "transition-duration": 0,
-          "children-class": "performance-modules",
-      },
+      // "drawer": {
+      //     "transition-duration": 0,
+      //     "children-class": "performance-modules",
+      // },
       "modules": [
         "temperature",
         "cpu",
@@ -80,12 +80,12 @@
     },
     "cpu": {
         "interval": 1,
-        "format": " {usage:}%",
+        "format": "{usage:3}% ",
         "tooltip": false
     },
     "memory": {
         "interval": 30,
-        "format": " {}%",
+        "format": "{percentage:3}% ",
         "tooltip": false
     },
     "temperature": {
@@ -94,7 +94,8 @@
         "critical-threshold": 80,
         // "format-critical": "{temperatureC}°C {icon}",
         //"format": "{temperatureC}°C {icon}",
-        "format": " {temperatureC}°C",
+        "format": "{temperatureC:3}°C",
+        "tooltip": false,
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -178,8 +179,8 @@
       ]
     },
     "pulseaudio": {
-        "format": " {volume}%",
-        "format-bluetooth": "{volume}%",
+        "format": "{volume:3}%",
+        "format-bluetooth": "{volume:3}",
         "format-muted": "MUTE",
         // "format-icons": {
         //   "headphones": "",

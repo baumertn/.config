@@ -8,7 +8,8 @@ case "$choice" in
         hyprlock
         ;;
     Logout)
-        hyprctl dispatch exit
+        # hyprctl dispatch 'hl.dsp.exit()'
+        systemctl --user exit
         ;;
     Suspend)
         hyprlock & sleep 0.5; systemctl suspend
