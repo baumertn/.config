@@ -2,6 +2,7 @@
 /*
 /sway/config.d/50-device.conf
 /hypr/devices/current.conf
+/hypr/devices/current.lua
 
 # Except:
 !.gitignore
