@@ -118,6 +118,7 @@ return {
 	},
 	{ "nvim-mini/mini.cursorword", version = false, opts = {} },
 	{ "nvim-mini/mini.surround", version = false, opts = {} },
+	{ "nvim-mini/mini.colors", version = false },
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
