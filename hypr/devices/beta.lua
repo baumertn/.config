@@ -31,7 +31,7 @@ hl.monitor({
 -- Autostart ====================================================================
 hl.on("hyprland.start", function()
 	hl.exec_cmd("nm-applet")
-	hl.exec_cmd("[workspace special:magic] 1password")
+	hl.exec_cmd("1password", { workspace = "special:magic" })
 end)
 -- End Autostart ================================================================
 
