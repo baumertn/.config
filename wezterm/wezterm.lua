@@ -36,8 +36,8 @@ config.window_padding = {
 	top = 0,
 	bottom = 0,
 }
-config.command_palette_fg_color = "#B1B9D9"
-config.command_palette_bg_color = "#1D1F30"
+-- config.command_palette_fg_color = "#AAAAAA"
+-- config.command_palette_bg_color = "#000000"
 config.command_palette_font_size = 16.0
 
 config.tab_bar_at_bottom = true
@@ -118,8 +118,14 @@ config.keys = {
 		mods = "LEADER",
 		action = wezterm.action_callback(function(window, pane)
 			local home = wezterm.home_dir
-			local base_dirs =
-				{ home .. "/dev/work", home .. "/dev/private", home .. "/dev/work/gitlab", home, home .. "/.config" }
+			local base_dirs = {
+				home .. "/dev",
+				home .. "/dev/work",
+				home .. "/dev/private",
+				home .. "/dev/work/gitlab",
+				home .. "/.config",
+				home,
+			}
 			local workspaces = sessionizer(base_dirs, 1, 1)
 
 			window:perform_action(
