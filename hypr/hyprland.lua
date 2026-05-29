@@ -9,7 +9,7 @@
 -- Create your files separately and then require them like this:
 -- require("myColors")
 
-require("./devices/current")
+require("devices/current")
 
 ------------------
 ---- MONITORS ----
