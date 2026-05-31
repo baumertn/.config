@@ -33,6 +33,7 @@ vim.o.signcolumn     = 'yes' -- Always show the sign columns
 vim.o.splitbelow     = true  -- New horizontal split below
 vim.o.splitright     = true  -- New vertical splits on the reight
 vim.o.termguicolors  = true  -- Enable GUI colors, should not be needed anymore.
+vim.o.winborder      = "single"
 
 vim.o.listchars = table.concat({ 'extends:…', 'trail:·', 'nbsp:␣', 'precedes:…', 'tab:»  ' }, ',')
 if vim.fn.has('nvim-0.9') == 1 then
@@ -134,7 +135,7 @@ vim.diagnostic.config({
   -- },
   float = true,
   jump = {
-    float = false,
+    on_jump = false,
     wrap = true
   },
 })

@@ -24,13 +24,11 @@ _G.Config = {
 		"git_rebase",
 		"gitignore",
 		"gitattributes",
-		-- Elixir
-		"elixir",
-		"eex",
-		"heex",
+		-- Go
+		"go",
+		"templ",
 		-- Ohter
 		"c",
-		"go",
 		-- "c_sharp",
 		"regex",
 		"markdown",

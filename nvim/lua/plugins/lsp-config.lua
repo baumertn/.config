@@ -5,6 +5,7 @@ local servers = {
 	-- ruff_lsp = {},
 	-- Go
 	gopls = {},
+	templ = {},
 	-- Javascript & Typescript
 	ts_ls = {},
 	eslint = {},
@@ -13,7 +14,7 @@ local servers = {
 	-- roslyn = {},
 	-- rzls = {},
 	-- Elixir
-	expert = {},
+	-- expert = {},
 	-- Lua
 	lua_ls = {
 		settings = {
