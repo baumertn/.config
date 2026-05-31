@@ -3,4 +3,5 @@
 SETUVAR --export DOTNET_CLI_TELEMETRY_OPTOUT:1
 SETUVAR --path FONTCONFIG_PATH:/home/nb/\x2econfig/fontconfig
 SETUVAR __fish_initialized:4300
+SETUVAR __fish_webconfig_theme_notification:set\x2dtheme\x2dv1\x2d\x231
 SETUVAR fish_user_paths:/home/nb/go/bin\x1e/usr/local/go/bin

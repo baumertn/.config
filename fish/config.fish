@@ -16,3 +16,8 @@ end
 if type -q uvx
   uvx --generate-shell-completion fish | source
 end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /home/nb/.lmstudio/bin
+# End of LM Studio CLI section
+
