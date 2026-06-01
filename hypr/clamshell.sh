@@ -13,7 +13,9 @@ LAPTOP_OUTPUT="eDP-1"  # laptop display
 # fi
 
 if hyprctl monitors -j | jq -e ".[] | select(.name == \"$LAPTOP_OUTPUT\")"; then
-    hyprctl keyword monitor $LAPTOP_OUTPUT,disable
+    hyprctl dispatch "hl.monitor.({ output = \"$LAPTOP_OUTPUT\", disabled = true })"
+    # hyprctl keyword monitor $LAPTOP_OUTPUT,disable
 else
-    hyprctl keyword monitor $LAPTOP_OUTPUT,preferred,0x0,auto
+    hyprctl dispatch "hl.monitor.({ output = 'eDP-1', mode = 'preffered', position = '0x0', scale = 'auto', })"
+    # hyprctl keyword monitor $LAPTOP_OUTPUT,preferred,0x0,auto
 fi
