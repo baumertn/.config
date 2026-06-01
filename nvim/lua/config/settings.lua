@@ -44,6 +44,7 @@ end
 -- Enable syntax highlighing if it wasn't already (as it is time consuming)
 -- Don't use defer it because it affects start screen appearance
 if vim.fn.exists('syntax_on') ~= 1 then vim.cmd('syntax enable') end
+vim.cmd('colorscheme fundament')
 
 -- Editing ====================================================================
 vim.o.autoindent    = true     -- Use auto indent
