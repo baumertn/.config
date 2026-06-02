@@ -181,6 +181,26 @@ hi(0, "DiagnosticUnderlineWarn", { sp = c.warn_fg, undercurl = true })
 hi(0, "DiagnosticVirtualTextError", { fg = c.error_fg, bg = c.error_bg })
 hi(0, "DiagnosticVirtualTextWarn", { fg = c.warn_fg, bg = c.warn_bg })
 
+-- Markup
+hi(0, "@markup", { fg = c.text }) -- For strings considerated text in a markup language.
+hi(0, "@markup.strong", { fg = c.red, bold = true }) -- bold
+hi(0, "@markup.italic", { fg = c.red, italic = true }) -- italic
+hi(0, "@markup.strikethrough", { fg = c.text, strikethrough = true }) -- strikethrough text
+hi(0, "@markup.underline", { link = "Underlined" }) -- underlined text
+hi(0, "@markup.heading", { fg = c.blue }) -- titles like: # Example
+hi(0, "@markup.heading.markdown", { bold = true }) -- bold headings in markdown, but not in HTML or other markup
+hi(0, "@markup.math", { fg = c.blue }) -- math environments (e.g. `$ ... $` in LaTeX)
+hi(0, "@markup.quote", { fg = c.pink }) -- block quotes
+hi(0, "@markup.environment", { fg = c.pink }) -- text environments of markup languages
+hi(0, "@markup.environment.name", { fg = c.blue }) -- text indicating the type of an environment
+hi(0, "@markup.link", { fg = c.lavender }) -- text references, footnotes, citations, etc.
+hi(0, "@markup.link.label", { fg = c.lavender }) -- link, reference descriptions
+hi(0, "@markup.link.url", { fg = c.blue, italic = true, underline = true }) -- urls, links and emails
+hi(0, "@markup.raw", { fg = c.green }) -- used for inline code in markdown and for doc in python (""")
+hi(0, "@markup.list", { fg = c.teal })
+hi(0, "@markup.list.checked", { fg = c.green }) -- todo notes
+hi(0, "@markup.list.unchecked", { fg = c.overlay1 }) -- todo notes
+
 -- Diff
 hi(0, "DiffAdd", c.add)
 hi(0, "DiffDelete", c.del)
