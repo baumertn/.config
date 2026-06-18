@@ -97,5 +97,14 @@ require("lazy").setup({
 	-- automatically check for plugin updates
 	checker = { enabled = true, notify = true },
 })
+
+vim.filetype.add({
+	filename = {
+		["Caddyfile"] = "caddyfile",
+	},
+	pattern = {
+		["*.caddy"] = "caddyfile",
+	},
+})
 -- -- The line beneath this is called `modeline`. See `:help modeline`
 -- -- vim: ts=2 sts=2 sw=2 et
