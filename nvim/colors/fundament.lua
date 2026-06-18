@@ -60,6 +60,8 @@ local Color = {
 	ACCENT_700 = "#4C0788",
 	ACCENT_800 = "#160227",
 
+	TEAL_300 = "#6BBFB0",
+
 	BLACK = "#000000",
 	WHITE = "#FFFFFF",
 }
@@ -71,7 +73,7 @@ local dark = {
 	visual = { bg = Color.MAUVE_800 },
 	-- Search machtes
 	search = { fg = Color.BLACK, bg = Color.NEUTRAL_200 },
-	cursearch = { fg = Color.NEUTRAL_300, bg = Color.ACCENT_700, bold = true },
+	cursearch = { fg = Color.BLACK, bg = Color.ACCENT_300, bold = true },
 
 	fg = Color.NEUTRAL_300, -- normal text, comments (equal weight intentional)
 	fg_dim = Color.NEUTRAL_600, -- punctuation, brackets — receding structure
@@ -79,8 +81,8 @@ local dark = {
 
 	-- Accents (use sparingly — each one costs attention budget)
 
-	accent = Color.ACCENT_500,
-	literal = Color.WHITE, -- string/number literals — values, not structure
+	accent = Color.ACCENT_300,
+	literal = Color.TEAL_300, -- string/number literals — values, not structure
 
 	-- Diagnostics (reserved — don't reuse these hues elsewhere)
 	error_fg = Color.RED_BASE,
@@ -133,8 +135,8 @@ hi(0, "CursorWord", { bg = c.bg_subtle }) -- if using nvim-cursorword
 -- Syntax
 -- Comments equal weight to code — intentional
 hi(0, "Comment", { fg = c.fg })
--- Punctuation recedes
-hi(0, "Delimiter", { fg = c.fg })
+-- Punctuation recedes; operators stay readable (semantic weight)
+hi(0, "Delimiter", { fg = c.fg_dim })
 hi(0, "Operator", { fg = c.fg })
 -- Literals get their own colour — values are meaningful
 hi(0, "String", { fg = c.literal })
@@ -182,24 +184,24 @@ hi(0, "DiagnosticVirtualTextError", { fg = c.error_fg, bg = c.error_bg })
 hi(0, "DiagnosticVirtualTextWarn", { fg = c.warn_fg, bg = c.warn_bg })
 
 -- Markup
-hi(0, "@markup", { fg = c.text }) -- For strings considerated text in a markup language.
-hi(0, "@markup.strong", { fg = c.red, bold = true }) -- bold
-hi(0, "@markup.italic", { fg = c.red, italic = true }) -- italic
-hi(0, "@markup.strikethrough", { fg = c.text, strikethrough = true }) -- strikethrough text
-hi(0, "@markup.underline", { link = "Underlined" }) -- underlined text
-hi(0, "@markup.heading", { fg = c.blue }) -- titles like: # Example
-hi(0, "@markup.heading.markdown", { bold = true }) -- bold headings in markdown, but not in HTML or other markup
-hi(0, "@markup.math", { fg = c.blue }) -- math environments (e.g. `$ ... $` in LaTeX)
-hi(0, "@markup.quote", { fg = c.pink }) -- block quotes
-hi(0, "@markup.environment", { fg = c.pink }) -- text environments of markup languages
-hi(0, "@markup.environment.name", { fg = c.blue }) -- text indicating the type of an environment
-hi(0, "@markup.link", { fg = c.lavender }) -- text references, footnotes, citations, etc.
-hi(0, "@markup.link.label", { fg = c.lavender }) -- link, reference descriptions
-hi(0, "@markup.link.url", { fg = c.blue, italic = true, underline = true }) -- urls, links and emails
-hi(0, "@markup.raw", { fg = c.green }) -- used for inline code in markdown and for doc in python (""")
-hi(0, "@markup.list", { fg = c.teal })
-hi(0, "@markup.list.checked", { fg = c.green }) -- todo notes
-hi(0, "@markup.list.unchecked", { fg = c.overlay1 }) -- todo notes
+hi(0, "@markup", { fg = c.fg })
+hi(0, "@markup.strong", { bold = true })
+hi(0, "@markup.italic", { italic = true })
+hi(0, "@markup.strikethrough", { strikethrough = true })
+hi(0, "@markup.underline", { underline = true })
+hi(0, "@markup.heading", { fg = c.fg_strong, bold = true })
+hi(0, "@markup.heading.markdown", { fg = c.fg_strong, bold = true })
+hi(0, "@markup.math", { fg = c.fg })
+hi(0, "@markup.quote", { fg = c.fg_dim, italic = true })
+hi(0, "@markup.environment", { fg = c.fg })
+hi(0, "@markup.environment.name", { fg = c.fg })
+hi(0, "@markup.link", { fg = c.fg, underline = true })
+hi(0, "@markup.link.label", { fg = c.fg, underline = true })
+hi(0, "@markup.link.url", { fg = c.fg_dim, italic = true, underline = true })
+hi(0, "@markup.raw", { fg = c.literal })
+hi(0, "@markup.list", { fg = c.fg })
+hi(0, "@markup.list.checked", { fg = c.fg_dim })
+hi(0, "@markup.list.unchecked", { fg = c.fg })
 
 -- Diff
 hi(0, "DiffAdd", c.add)
@@ -211,16 +213,18 @@ hi(0, "DiffText", { fg = c.change.fg, bold = true })
 -- These override legacy groups in modern configs — don't neglect them
 hi(0, "@comment", { link = "Comment" })
 hi(0, "@comment.documentation", { link = "Comment" })
-hi(0, "@punctuation", { fg = c.fg })
-hi(0, "@punctuation.bracket", { fg = c.fg })
-hi(0, "@punctuation.delimiter", { fg = c.fg })
+hi(0, "@punctuation", { fg = c.fg_dim })
+hi(0, "@punctuation.bracket", { fg = c.fg_dim })
+hi(0, "@punctuation.delimiter", { fg = c.fg_dim })
 hi(0, "@string", { link = "String" })
 hi(0, "@number", { link = "Number" })
 hi(0, "@boolean", { link = "Boolean" })
 -- Everything else links to Normal until you decide otherwise
 hi(0, "@variable", { fg = c.fg_strong })
+hi(0, "@variable.parameter", { fg = c.accent })
+hi(0, "@constant.builtin", { link = "Constant" })
 hi(0, "@function", { fg = c.fg })
-hi(0, "@keyword", { fg = c.fg })
+hi(0, "@keyword", { link = "Keyword" })
 hi(0, "@type", { fg = c.fg, italic = true })
 
 -- LSP semantic tokens (commonly missed — causes inconsistency)
@@ -228,6 +232,7 @@ hi(0, "@type", { fg = c.fg, italic = true })
 -- hi(0, "@lsp.type.function",  { fg = c.fg })
 -- hi(0, "@lsp.type.variable",  { fg = c.fg })
 -- hi(0, "@lsp.type.keyword",   { fg = c.fg })
+hi(0, "@lsp.type.parameter", { fg = c.accent })
 
 -- LSP document highlight (dynamic — highlights all refs to symbol under cursor)
 -- This can replace static definition highlighting
