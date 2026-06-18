@@ -128,7 +128,7 @@ hi(0, "CursorLineNr", { fg = c.fg_dim, bg = c.bg_subtle, bold = true })
 hi(0, "LineNr", { fg = c.fg_dim })
 hi(0, "Visual", c.visual)
 hi(0, "Search", c.search)
-hi(0, "IncSearch", { bg = c.serach_bg, bold = true })
+hi(0, "IncSearch", { link = "CurSearch" })
 hi(0, "CurSearch", c.cursearch)
 hi(0, "CursorWord", { bg = c.bg_subtle }) -- if using nvim-cursorword
 
