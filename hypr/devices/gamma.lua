@@ -13,7 +13,7 @@ hl.monitor({
 hl.on("hyprland.start", function()
 	hl.exec_cmd("solaar -w hide") -- Solaar is for Logitech Devices
 	hl.exec_cmd("kdeconnectd")
-	hl.exec_cmd("[workspace special:magic] fooyin")
+	-- hl.exec_cmd("[workspace special:magic] fooyin")
 end)
 -- End Autostart ================================================================
 
