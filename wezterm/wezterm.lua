@@ -22,6 +22,11 @@ local function scheme_for_appearance(appearance)
 end
 
 config.color_scheme = scheme_for_appearance(get_appearance())
+config.colors = {
+	cursor_bg = "#D4D4D4", -- cursor body
+	cursor_border = "#ffffff", -- outline (block/box cursor)
+	cursor_fg = "#000000", -- text under the cursor
+}
 
 config.default_prog = { "/usr/bin/fish", "-l" }
 
