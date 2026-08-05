@@ -40,16 +40,23 @@ local Color = {
 
 	-- Red, Amber, Blue are meaningful colors.
 	-- Do not use them for normal theming
+	--
+	-- _BRIGHT = wash background (light bg) — _DARK = wash background (dark bg)
+	-- _BASE   = readable ink on a dark bg
+	-- _DEEP   = readable ink on a light bg (_BASE is far too pale there)
 	RED_BRIGHT = "#fcd9d9",
 	RED_BASE = "#ef4444",
+	RED_DEEP = "#B42318",
 	RED_DARK = "#380505",
 
 	AMBER_BRIGHT = "#FCE0B1",
 	AMBER_BASE = "#f59e0b",
+	AMBER_DEEP = "#92400E",
 	AMBER_DARK = "#281901",
 
 	BLUE_BRIGHT = "#D8F1FD",
 	BLUE_BASE = "#38bdf8",
+	BLUE_DEEP = "#075985",
 	BLUE_DARK = "#021B27",
 
 	ACCENT_100 = "#F5ECFE",
@@ -60,7 +67,12 @@ local Color = {
 	ACCENT_700 = "#4C0788",
 	ACCENT_800 = "#160227",
 
-	TEAL_300 = "#6BBFB0",
+	TEAL_300 = "#6BBFB0", -- literals on dark  — LCh: L*72 C*29 h181
+	TEAL_700 = "#00695C", -- literals on light — LCh: L*39 C*29 h180
+	-- Both carry the same chroma and hue, so literals separate from the neutral
+	-- text by the same perceptual distance in either variant (dE ~32).
+	-- If TEAL_700 reads too close to normal text in practice, escalate to
+	-- "#046F5F" (C*31, dE 34, 5.84:1) or "#0D7A66" (C*33, dE 38, 5.04:1).
 
 	BLACK = "#000000",
 	WHITE = "#FFFFFF",
@@ -108,11 +120,76 @@ local dark = {
 
 -- Light is an override layer on top of dark, so a missing key degrades to the
 -- dark value instead of nil (nvim_set_hl throws on a nil table).
+--
+-- Mirrors dark's *contrast ratios*, not its literal values: every role sits at
+-- roughly the same distance from the background as its dark counterpart, so the
+-- same things recede and the same things pop.
 local light = {
-	-- TODO: Implement light theme
+	bg = Color.NEUTRAL_50, -- paper, not pure white — pure white glares
+	bg_subtle = Color.NEUTRAL_200, -- cursorline, subtle grouping
+	-- Visual mode selection color.
+	-- No `fg` to preserve the colour of the selected text element.
+	-- Mauve, and a step past bg_subtle so selection ≠ cursorline.
+	visual = { bg = Color.MAUVE_300 },
+	-- Search matches — inverted block, mirroring dark's bright-on-black
+	search = { fg = Color.NEUTRAL_50, bg = Color.NEUTRAL_600 },
+	cursearch = { fg = Color.WHITE, bg = Color.ACCENT_600, bold = true },
+
+	fg = Color.NEUTRAL_700, -- normal text, comments (equal weight intentional)
+	fg_dim = Color.NEUTRAL_400, -- punctuation, brackets — receding structure
+	fg_strong = Color.BLACK, -- definitions, things that must pop
+
+	-- Accents (use sparingly — each one costs attention budget)
+
+	accent = Color.ACCENT_500,
+	literal = Color.TEAL_700, -- string/number literals — values, not structure
+
+	-- Diagnostics (reserved — don't reuse these hues elsewhere)
+	error_fg = Color.RED_DEEP,
+	error_bg = Color.RED_BRIGHT,
+	warn_fg = Color.AMBER_DEEP,
+	warn_bg = Color.AMBER_BRIGHT,
+	hint_fg = Color.BLUE_DEEP,
+	hint_bg = Color.BLUE_BRIGHT,
+	info_fg = Color.BLUE_DEEP,
+	info_bg = Color.BLUE_BRIGHT,
+
+	-- Diff
+	add = { fg = Color.BLUE_DEEP, bg = Color.BLUE_BRIGHT },
+	del = { fg = Color.RED_DEEP, bg = Color.RED_BRIGHT },
+	change = { fg = Color.AMBER_DEEP, bg = Color.AMBER_BRIGHT },
+	-- Inverted rather than brightened: on light there is no amber above
+	-- AMBER_BRIGHT to escalate into, so flip the block instead.
+	change_strong = { fg = Color.AMBER_BRIGHT, bg = Color.AMBER_DEEP, bold = true },
+
+	-- UI chrome
+	-- NEUTRAL_300 would be "correct" by hierarchy (border dimmer than fg_dim,
+	-- as on dark) but lands at 1.4:1 — an invisible FloatBorder. Shares fg_dim's
+	-- value instead; both are recede-roles, so the collision is harmless.
+	border = Color.NEUTRAL_400,
+	status = { fg = Color.NEUTRAL_700, bg = "NONE" },
 }
 
-local c = vim.o.background == "light" and vim.tbl_deep_extend("force", dark, light) or dark
+-- Both variants must define exactly the same keys. Falling back to the other
+-- variant's value would paint a dark colour onto a light background: a silently
+-- wrong render in whichever variant you aren't currently looking at. Fail at
+-- load time instead, naming the key.
+local function check_parity(a, b, a_name, b_name, path)
+	path = path or ""
+	for k, v in pairs(a) do
+		if b[k] == nil then
+			error(("fundament: `%s` defines `%s%s`, `%s` does not"):format(a_name, path, k, b_name), 0)
+		elseif type(v) ~= type(b[k]) then
+			error(("fundament: `%s%s` is %s in `%s` but %s in `%s`"):format(path, k, type(v), a_name, type(b[k]), b_name), 0)
+		elseif type(v) == "table" then
+			check_parity(v, b[k], a_name, b_name, path .. k .. ".")
+		end
+	end
+end
+check_parity(dark, light, "dark", "light")
+check_parity(light, dark, "light", "dark")
+
+local c = vim.o.background == "light" and light or dark
 
 -- ============================================================
 -- HIGHLIGHTS
