@@ -71,7 +71,7 @@ local dark = {
 	-- Visual mode selection color.
 	-- No `fg` to preserve the colour of the selected text element.
 	visual = { bg = Color.MAUVE_800 },
-	-- Search machtes
+	-- Search matches
 	search = { fg = Color.BLACK, bg = Color.NEUTRAL_200 },
 	cursearch = { fg = Color.BLACK, bg = Color.ACCENT_300, bold = true },
 
@@ -98,17 +98,21 @@ local dark = {
 	add = { fg = Color.BLUE_BASE, bg = Color.BLUE_DARK },
 	del = { fg = Color.RED_BASE, bg = Color.RED_DARK },
 	change = { fg = Color.AMBER_BASE, bg = Color.AMBER_DARK },
+	-- DiffText sits inside a DiffChange line — needs a brighter fg to separate
+	change_strong = { fg = Color.AMBER_BRIGHT, bg = Color.AMBER_DARK, bold = true },
 
 	-- UI chrome
 	border = Color.NEUTRAL_700,
-	status = { fg = Color.NEUTRAL_300, bg = "None" },
+	status = { fg = Color.NEUTRAL_300, bg = "NONE" },
 }
 
+-- Light is an override layer on top of dark, so a missing key degrades to the
+-- dark value instead of nil (nvim_set_hl throws on a nil table).
 local light = {
 	-- TODO: Implement light theme
 }
 
-local c = vim.o.background == "light" and light or dark
+local c = vim.o.background == "light" and vim.tbl_deep_extend("force", dark, light) or dark
 
 -- ============================================================
 -- HIGHLIGHTS
@@ -123,13 +127,27 @@ hi(0, "NormalFloat", { fg = c.fg, bg = c.bg })
 hi(0, "NormalNC", { fg = c.fg, bg = c.bg }) -- non-current windows
 
 -- Cursor & selection
+hi(0, "Cursor", { fg = c.bg, bg = c.fg_strong })
+hi(0, "lCursor", { link = "Cursor" })
+hi(0, "TermCursor", { link = "Cursor" })
 hi(0, "CursorLine", { bg = c.bg_subtle })
-hi(0, "CursorLineNr", { fg = c.fg_dim, bg = c.bg_subtle, bold = true })
+hi(0, "CursorColumn", { bg = c.bg_subtle })
+hi(0, "ColorColumn", { bg = c.bg_subtle })
+-- Current line number must be brighter than LineNr, not dimmer
+hi(0, "CursorLineNr", { fg = c.fg, bg = c.bg_subtle, bold = true })
 hi(0, "LineNr", { fg = c.fg_dim })
+hi(0, "LineNrAbove", { link = "LineNr" })
+hi(0, "LineNrBelow", { link = "LineNr" })
+hi(0, "SignColumn", { fg = c.fg_dim, bg = c.bg })
+hi(0, "CursorLineSign", { bg = c.bg_subtle })
+hi(0, "CursorLineFold", { bg = c.bg_subtle })
 hi(0, "Visual", c.visual)
+hi(0, "VisualNOS", { link = "Visual" })
+hi(0, "CurSearch", c.cursearch)
 hi(0, "Search", c.search)
 hi(0, "IncSearch", { link = "CurSearch" })
-hi(0, "CurSearch", c.cursearch)
+hi(0, "Substitute", { link = "CurSearch" })
+hi(0, "MatchParen", { fg = c.accent, bg = c.bg_subtle, bold = true })
 hi(0, "CursorWord", { bg = c.bg_subtle }) -- if using nvim-cursorword
 
 -- Syntax
@@ -150,6 +168,12 @@ hi(0, "Identifier", { fg = c.fg })
 hi(0, "Constant", { fg = c.fg, bold = true })
 hi(0, "PreProc", { fg = c.fg })
 hi(0, "Special", { fg = c.fg })
+hi(0, "SpecialKey", { fg = c.fg_dim })
+hi(0, "Statement", { fg = c.fg })
+hi(0, "Underlined", { fg = c.fg, underline = true })
+hi(0, "Directory", { fg = c.fg })
+hi(0, "Todo", { fg = c.fg_strong, bold = true })
+hi(0, "Error", { fg = c.error_fg, bg = c.error_bg })
 
 -- Definitions pop (LSP-driven alternatives exist — see below)
 hi(0, "Title", { fg = c.fg_strong, bold = true })
@@ -157,10 +181,48 @@ hi(0, "Title", { fg = c.fg_strong, bold = true })
 -- UI structure
 hi(0, "WinSeparator", { fg = c.border })
 hi(0, "FloatBorder", { fg = c.border, bg = c.bg })
+hi(0, "FloatTitle", { fg = c.fg_strong, bg = c.bg, bold = true })
+hi(0, "FloatFooter", { fg = c.fg_dim, bg = c.bg })
 hi(0, "Pmenu", { fg = c.fg, bg = c.bg })
-hi(0, "PmenuSel", { fg = c.fg_strong, bg = c.bg_visual, bold = true })
+hi(0, "PmenuSel", { fg = c.fg_strong, bg = c.visual.bg, bold = true })
 hi(0, "PmenuSbar", { bg = c.bg_subtle })
 hi(0, "PmenuThumb", { bg = c.fg_dim })
+hi(0, "PmenuMatch", { fg = c.accent })
+hi(0, "PmenuMatchSel", { fg = c.accent, bg = c.visual.bg, bold = true })
+hi(0, "WildMenu", { link = "PmenuSel" })
+
+-- Non-text: folds, filler, whitespace — structure, so it recedes
+hi(0, "NonText", { fg = c.fg_dim })
+hi(0, "EndOfBuffer", { link = "NonText" })
+hi(0, "Whitespace", { fg = c.fg_dim })
+hi(0, "Conceal", { fg = c.fg_dim })
+hi(0, "Folded", { fg = c.fg_dim, bg = c.bg_subtle })
+hi(0, "FoldColumn", { fg = c.fg_dim, bg = c.bg })
+
+-- Messages
+hi(0, "MsgArea", { fg = c.fg, bg = c.bg })
+hi(0, "MsgSeparator", { fg = c.border, bg = c.bg })
+hi(0, "ModeMsg", { fg = c.fg, bold = true })
+hi(0, "MoreMsg", { fg = c.fg })
+hi(0, "Question", { fg = c.fg })
+hi(0, "ErrorMsg", { fg = c.error_fg })
+hi(0, "WarningMsg", { fg = c.warn_fg })
+
+-- Spelling: undercurl carries the signal, hue stays reserved
+hi(0, "SpellBad", { sp = c.error_fg, undercurl = true })
+hi(0, "SpellCap", { sp = c.hint_fg, undercurl = true })
+hi(0, "SpellLocal", { sp = c.hint_fg, undercurl = true })
+hi(0, "SpellRare", { sp = c.hint_fg, undercurl = true })
+
+-- Tabs & winbar
+hi(0, "TabLine", { fg = c.fg_dim, bg = c.bg })
+hi(0, "TabLineSel", { fg = c.fg_strong, bg = c.bg_subtle, bold = true })
+hi(0, "TabLineFill", { bg = c.bg })
+hi(0, "WinBar", { fg = c.fg, bg = c.bg })
+hi(0, "WinBarNC", { fg = c.fg_dim, bg = c.bg })
+
+-- Quickfix
+hi(0, "QuickFixLine", { bg = c.bg_subtle, bold = true })
 
 -- Statusline
 hi(0, "StatusLine", c.status)
@@ -178,10 +240,21 @@ hi(0, "DiagnosticError", { fg = c.error_fg })
 hi(0, "DiagnosticWarn", { fg = c.warn_fg })
 hi(0, "DiagnosticHint", { fg = c.hint_fg })
 hi(0, "DiagnosticInfo", { fg = c.info_fg })
+hi(0, "DiagnosticOk", { fg = c.fg })
 hi(0, "DiagnosticUnderlineError", { sp = c.error_fg, undercurl = true })
 hi(0, "DiagnosticUnderlineWarn", { sp = c.warn_fg, undercurl = true })
+hi(0, "DiagnosticUnderlineHint", { sp = c.hint_fg, undercurl = true })
+hi(0, "DiagnosticUnderlineInfo", { sp = c.info_fg, undercurl = true })
 hi(0, "DiagnosticVirtualTextError", { fg = c.error_fg, bg = c.error_bg })
 hi(0, "DiagnosticVirtualTextWarn", { fg = c.warn_fg, bg = c.warn_bg })
+hi(0, "DiagnosticVirtualTextHint", { fg = c.hint_fg, bg = c.hint_bg })
+hi(0, "DiagnosticVirtualTextInfo", { fg = c.info_fg, bg = c.info_bg })
+hi(0, "DiagnosticSignError", { link = "DiagnosticError" })
+hi(0, "DiagnosticSignWarn", { link = "DiagnosticWarn" })
+hi(0, "DiagnosticSignHint", { link = "DiagnosticHint" })
+hi(0, "DiagnosticSignInfo", { link = "DiagnosticInfo" })
+hi(0, "DiagnosticDeprecated", { fg = c.fg_dim, strikethrough = true })
+hi(0, "DiagnosticUnnecessary", { fg = c.fg_dim })
 
 -- Markup
 hi(0, "@markup", { fg = c.fg })
@@ -207,7 +280,11 @@ hi(0, "@markup.list.unchecked", { fg = c.fg })
 hi(0, "DiffAdd", c.add)
 hi(0, "DiffDelete", c.del)
 hi(0, "DiffChange", c.change)
-hi(0, "DiffText", { fg = c.change.fg, bold = true })
+hi(0, "DiffText", c.change_strong)
+-- Gitsigns / statusline conventions
+hi(0, "Added", { fg = c.add.fg })
+hi(0, "Removed", { fg = c.del.fg })
+hi(0, "Changed", { fg = c.change.fg })
 
 -- Treesitter (add as :Inspect surfaces them)
 -- These override legacy groups in modern configs — don't neglect them
@@ -240,14 +317,15 @@ hi(0, "LspReferenceText", { bg = c.bg_subtle })
 hi(0, "LspReferenceRead", { bg = c.bg_subtle })
 hi(0, "LspReferenceWrite", { bg = c.bg_subtle, bold = true })
 
--- Extmarks
-hi(0, "DiagnosticUnderlineError", { sp = c.error_fg, underline = true })
-hi(0, "DiagnosticUnderlineWarn", { sp = c.warn_fg, underline = true })
 -- ============================================================
 -- BACKGROUND TOGGLE AUTOCMD
--- Re-applies theme when :set background=light/dark is called
+-- Re-applies theme when :set background=light/dark is called.
+-- Named group + clear so re-sourcing replaces the autocmd instead of stacking
+-- copies (this file re-sources itself from inside the callback).
 -- ============================================================
+local group = vim.api.nvim_create_augroup("FundamentBackground", { clear = true })
 vim.api.nvim_create_autocmd("OptionSet", {
+	group = group,
 	pattern = "background",
 	callback = function()
 		vim.cmd("colorscheme fundament")
