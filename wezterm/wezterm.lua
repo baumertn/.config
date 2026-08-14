@@ -46,7 +46,7 @@ config.window_padding = {
 config.command_palette_font_size = 16.0
 
 config.tab_bar_at_bottom = true
-config.leader = { key = "b", mods = "CTRL" }
+config.leader = { key = "Space", mods = "ALT", timeout_milliseconds = 1000 }
 
 -- tmux sessionizer equivalent
 
@@ -76,32 +76,90 @@ local function sessionizer(base_dirs, min_depth, max_depth)
 	return directories
 end
 
+-- Pane navigation lives on plain ALT so it costs one chord, not two.
+-- ALT is free: nvim binds no <M-*>, hyprland uses SUPER, fish has no custom binds.
+local function pane_nav(key, dir)
+	return { key = key, mods = "ALT", action = act.ActivatePaneDirection(dir) }
+end
+
 config.keys = {
-	-- tmux-like controls
-	-- Window management
-	{ key = "a", mods = "LEADER", action = act({ SendString = "`" }) },
-	-- {key="-",  mods="LEADER", action=act{SplitVertical={domain="CurrentPaneDomain"}} },
-	-- {key="\\", mods="LEADER", action=act.SplitHorizontal{domain="CurrentPaneDomain"}},
-	-- { key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
+	-- Leader is ALT+Space, so apps never see it; this sends a literal one through.
+	{ key = "a", mods = "LEADER", action = act.SendKey({ key = "Space", mods = "ALT" }) },
+
+	-- Pane navigation: direct, no prefix
+	pane_nav("h", "Left"),
+	pane_nav("j", "Down"),
+	pane_nav("k", "Up"),
+	pane_nav("l", "Right"),
+
+	-- One-off resize nudges; LEADER r enters resize mode for sustained work
+	{ key = "H", mods = "ALT|SHIFT", action = act.AdjustPaneSize({ "Left", 3 }) },
+	{ key = "J", mods = "ALT|SHIFT", action = act.AdjustPaneSize({ "Down", 3 }) },
+	{ key = "K", mods = "ALT|SHIFT", action = act.AdjustPaneSize({ "Up", 3 }) },
+	{ key = "L", mods = "ALT|SHIFT", action = act.AdjustPaneSize({ "Right", 3 }) },
+
+	-- Splits: ALT for speed, LEADER for tmux muscle memory
+	{ key = "\\", mods = "ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "-", mods = "ALT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "\\", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "-", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+
+	{ key = "z", mods = "ALT", action = act.TogglePaneZoomState },
+	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
+
+	-- Label picker: jump anywhere in a complex layout without directional hopping
+	{ key = "w", mods = "ALT", action = act.PaneSelect({ alphabet = "asdfghjkl" }) },
+	{ key = "Space", mods = "LEADER", action = act.PaneSelect({ alphabet = "asdfghjkl" }) },
+	{ key = "S", mods = "LEADER", action = act.PaneSelect({ mode = "SwapWithActive", alphabet = "asdfghjkl" }) },
+
+	{ key = "o", mods = "LEADER", action = act.ActivatePaneDirection("Next") },
+	{ key = ";", mods = "LEADER", action = act.ActivatePaneDirection("Prev") },
+	{ key = "{", mods = "LEADER", action = act.RotatePanes("CounterClockwise") },
+	{ key = "}", mods = "LEADER", action = act.RotatePanes("Clockwise") },
+
+	-- Modal tables: repeatable without re-pressing leader
+	{ key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+	{ key = "m", mods = "LEADER", action = act.ActivateKeyTable({ name = "move_tab", one_shot = false }) },
+
+	-- Tabs
 	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
 	{ key = "d", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },
+	{ key = "[", mods = "ALT", action = act.ActivateTabRelative(-1) },
+	{ key = "]", mods = "ALT", action = act.ActivateTabRelative(1) },
 	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
 	{ key = "N", mods = "LEADER", action = act.MoveTabRelative(1) },
 	{ key = "P", mods = "LEADER", action = act.MoveTabRelative(-1) },
 
-	{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-	{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-	{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+	{
+		key = ",",
+		mods = "LEADER",
+		action = act.PromptInputLine({
+			description = "New tab title",
+			action = wezterm.action_callback(function(window, _, line)
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
 
-	{ key = "H", mods = "LEADER", action = act({ AdjustPaneSize = { "Left", 5 } }) },
-	{ key = "J", mods = "LEADER", action = act({ AdjustPaneSize = { "Down", 5 } }) },
-	{ key = "K", mods = "LEADER", action = act({ AdjustPaneSize = { "Up", 5 } }) },
-	{ key = "L", mods = "LEADER", action = act({ AdjustPaneSize = { "Right", 5 } }) },
+	-- Switch between existing workspaces (LEADER f below only creates them)
+	{ key = "w", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
+	{
+		key = "$",
+		mods = "LEADER",
+		action = act.PromptInputLine({
+			description = "Rename workspace",
+			action = wezterm.action_callback(function(_, _, line)
+				if line then
+					wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line)
+				end
+			end),
+		}),
+	},
 
 	{ key = "`", mods = "LEADER", action = act.ActivateLastTab },
-	{ key = " ", mods = "LEADER", action = act.ActivateTabRelative(1) },
 	{ key = "1", mods = "LEADER", action = act({ ActivateTab = 0 }) },
 	{ key = "2", mods = "LEADER", action = act({ ActivateTab = 1 }) },
 	{ key = "3", mods = "LEADER", action = act({ ActivateTab = 2 }) },
@@ -117,6 +175,18 @@ config.keys = {
 	{ key = "[", mods = "LEADER", action = act.ActivateCopyMode },
 	-- Paste from Copy Mode
 	{ key = "]", mods = "LEADER", action = act.PasteFrom("PrimarySelection") },
+	{ key = "/", mods = "LEADER", action = act.Search({ CaseInSensitiveString = "" }) },
+	{
+		key = "u",
+		mods = "LEADER",
+		action = act.QuickSelectArgs({
+			label = "open url",
+			patterns = { "https?://\\S+" },
+			action = wezterm.action_callback(function(window, pane)
+				wezterm.open_with(window:get_selection_text_for_pane(pane))
+			end),
+		}),
+	},
 	-- tmux sessionizer equivalent
 	{
 		key = "f",
@@ -165,6 +235,34 @@ config.keys = {
 }
 
 config.key_tables = {
+	-- Sustained resizing: LEADER r, then hjkl as often as needed, Esc/q/Enter to leave.
+	resize_pane = {
+		{ key = "h", action = act.AdjustPaneSize({ "Left", 3 }) },
+		{ key = "j", action = act.AdjustPaneSize({ "Down", 3 }) },
+		{ key = "k", action = act.AdjustPaneSize({ "Up", 3 }) },
+		{ key = "l", action = act.AdjustPaneSize({ "Right", 3 }) },
+		{ key = "LeftArrow", action = act.AdjustPaneSize({ "Left", 3 }) },
+		{ key = "DownArrow", action = act.AdjustPaneSize({ "Down", 3 }) },
+		{ key = "UpArrow", action = act.AdjustPaneSize({ "Up", 3 }) },
+		{ key = "RightArrow", action = act.AdjustPaneSize({ "Right", 3 }) },
+		{ key = "Escape", action = "PopKeyTable" },
+		{ key = "q", action = "PopKeyTable" },
+		{ key = "Enter", action = "PopKeyTable" },
+	},
+
+	-- Tab reordering: LEADER m, then h/l (or j/k), Esc/q/Enter to leave.
+	move_tab = {
+		{ key = "h", action = act.MoveTabRelative(-1) },
+		{ key = "l", action = act.MoveTabRelative(1) },
+		{ key = "j", action = act.MoveTabRelative(-1) },
+		{ key = "k", action = act.MoveTabRelative(1) },
+		{ key = "LeftArrow", action = act.MoveTabRelative(-1) },
+		{ key = "RightArrow", action = act.MoveTabRelative(1) },
+		{ key = "Escape", action = "PopKeyTable" },
+		{ key = "q", action = "PopKeyTable" },
+		{ key = "Enter", action = "PopKeyTable" },
+	},
+
 	-- added new shortcuts to the end
 	copy_mode = {
 		{ key = "c", mods = "CTRL", action = act.CopyMode("Close") },
@@ -257,4 +355,25 @@ config.key_tables = {
 		{ key = "u", mods = "CTRL", action = act.CopyMode("ClearPattern") },
 	},
 }
+
+-- Show which key table is active so modal mode is never invisible.
+-- Explicit fg/bg: the tab bar's default status color is too low-contrast to read.
+wezterm.on("update-right-status", function(window, _)
+	local name = window:active_key_table()
+	if not name then
+		window:set_right_status("")
+		return
+	end
+	window:set_right_status(wezterm.format({
+		{ Background = { Color = "#db7b26" } },
+		{ Foreground = { Color = "#090300" } },
+		{ Attribute = { Intensity = "Bold" } },
+		{ Text = " " .. name:upper() .. " " },
+		{ Background = { Color = "none" } },
+		{ Foreground = { Color = "none" } },
+		{ Attribute = { Intensity = "Normal" } },
+		{ Text = " " },
+	}))
+end)
+
 return config
