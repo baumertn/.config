@@ -396,18 +396,3 @@ hi(0, "@lsp.type.parameter", { fg = c.accent })
 hi(0, "LspReferenceText", { bg = c.bg_subtle })
 hi(0, "LspReferenceRead", { bg = c.bg_subtle })
 hi(0, "LspReferenceWrite", { bg = c.bg_subtle, bold = true })
-
--- ============================================================
--- BACKGROUND TOGGLE AUTOCMD
--- Re-applies theme when :set background=light/dark is called.
--- Named group + clear so re-sourcing replaces the autocmd instead of stacking
--- copies (this file re-sources itself from inside the callback).
--- ============================================================
-local group = vim.api.nvim_create_augroup("FundamentBackground", { clear = true })
-vim.api.nvim_create_autocmd("OptionSet", {
-	group = group,
-	pattern = "background",
-	callback = function()
-		vim.cmd("colorscheme fundament")
-	end,
-})
