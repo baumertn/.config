@@ -180,7 +180,10 @@ local function check_parity(a, b, a_name, b_name, path)
 		if b[k] == nil then
 			error(("fundament: `%s` defines `%s%s`, `%s` does not"):format(a_name, path, k, b_name), 0)
 		elseif type(v) ~= type(b[k]) then
-			error(("fundament: `%s%s` is %s in `%s` but %s in `%s`"):format(path, k, type(v), a_name, type(b[k]), b_name), 0)
+			error(
+				("fundament: `%s%s` is %s in `%s` but %s in `%s`"):format(path, k, type(v), a_name, type(b[k]), b_name),
+				0
+			)
 		elseif type(v) == "table" then
 			check_parity(v, b[k], a_name, b_name, path .. k .. ".")
 		end
